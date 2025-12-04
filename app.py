@@ -9,7 +9,7 @@ modelo = pickle.load(open("modelo_final.pkl", "rb"))
 st.set_page_config(page_title="Previsão de Doença Cardíaca", layout="centered")
 
 st.title("Detecção de Doença Cardíaca com IA")
-st.write("Preencha os dados abaixo para realizar a predição:")
+st.write("Preenchas os dados abaixo para realizar a predição:")
 
 # Campos de entrada com explicações
 
@@ -104,3 +104,4 @@ if st.button("🔍 Realizar Previsão"):
         st.error("⚠️ Risco de Doença Cardíaca Detectado")
     else:
         st.success("✅ Baixo risco de Doença Cardíaca")
+
