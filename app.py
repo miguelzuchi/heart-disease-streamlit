@@ -1,100 +1,96 @@
 import streamlit as st
 import pickle
 import numpy as np
-import pandas as pd
 
-# Carregar modelo
 modelo = pickle.load(open("modelo_final.pkl", "rb"))
 
 st.set_page_config(page_title="Previsão de Doença Cardíaca", layout="centered")
-
 st.title("Detecção de Doença Cardíaca com IA")
-st.write("Preenchas os dados abaixo para realizar a predição:")
+st.write("Preencha os dados abaixo para realizar a predição:")
 
-# Campos de entrada com explicações
-
-age = st.number_input(
-    "Idade",
-    min_value=1,
-    max_value=120,
-    help="Informe a idade do paciente em anos."
-)
+age = st.number_input("Idade", min_value=1, max_value=120)
 
 sex = st.selectbox(
     "Sexo",
-    ["Masculino", "Feminino"],
-    help="Selecione o sexo biológico do paciente."
+    ["Masculino", "Feminino"]
 )
+sex_valor = 1 if sex == "Masculino" else 0
 
 cp = st.selectbox(
-    "Tipo de Dor no Peito (cp)",
-    [0, 1, 2, 3],
-    help="0 = Angina típica | 1 = Angina atípica | 2 = Dor não-anginosa | 3 = Assintomático"
+    "Tipo de Dor no Peito",
+    {
+        "Angina típica": 0,
+        "Angina atípica": 1,
+        "Dor não-anginosa": 2,
+        "Assintomático": 3
+    }
 )
 
-trestbps = st.number_input(
-    "Pressão arterial em repouso (mmHg)",
-    help="Pressão sistólica do paciente em repouso. Ex: 120."
-)
+trestbps = st.number_input("Pressão arterial em repouso (mmHg)")
 
-chol = st.number_input(
-    "Colesterol (mg/dL)",
-    help="Valor do colesterol total no sangue. Normal até 200."
-)
+chol = st.number_input("Colesterol (mg/dL)")
 
 fbs = st.selectbox(
-    "Açúcar no sangue em jejum > 120 mg/dl",
-    [0, 1],
-    help="0 = Não | 1 = Sim (nível alto de glicose)"
+    "Açúcar no sangue em jejum",
+    {
+        "Normal (≤ 120 mg/dl)": 0,
+        "Alto (> 120 mg/dl)": 1
+    }
 )
 
 restecg = st.selectbox(
-    "Resultado do eletrocardiograma (restecg)",
-    [0, 1, 2],
-    help="0 = Normal | 1 = Anormalidade ST-T | 2 = Coração aumentado"
+    "Eletrocardiograma em repouso",
+    {
+        "Normal": 0,
+        "Anormalidade ST-T": 1,
+        "Coração aumentado": 2
+    }
 )
 
-thalach = st.number_input(
-    "Frequência cardíaca máxima (bpm)",
-    help="Batimentos por minuto atingidos no esforço. Ex: 150."
-)
+thalach = st.number_input("Frequência cardíaca máxima (bpm)")
 
 exang = st.selectbox(
     "Angina induzida por exercício",
-    [0, 1],
-    help="0 = Não | 1 = Sim (dor no peito durante esforço)"
+    {
+        "Não": 0,
+        "Sim": 1
+    }
 )
 
-oldpeak = st.number_input(
-    "Oldpeak (depressão do ST)",
-    help="Queda no segmento ST do ECG durante esforço. Valores elevados indicam risco."
-)
+oldpeak = st.number_input("Oldpeak (depressão ST)")
 
 slope = st.selectbox(
-    "Inclinação do segmento ST",
-    [0, 1, 2],
-    help="0 = Descendente | 1 = Plana | 2 = Ascendente (normal)"
+    "Inclinação ST",
+    {
+        "Descendente": 0,
+        "Plana": 1,
+        "Ascendente": 2
+    }
 )
 
 ca = st.selectbox(
-    "Número de vasos principais comprometidos",
-    [0, 1, 2, 3, 4],
-    help="Quantidade de vasos coronários obstruídos detectados"
+    "Número de vasos com obstrução",
+    {
+        "0 vasos": 0,
+        "1 vaso": 1,
+        "2 vasos": 2,
+        "3 vasos": 3,
+        "4 vasos": 4
+    }
 )
 
 thal = st.selectbox(
-    "Teste de Tálio (thal)",
-    [0, 1, 2, 3],
-    help="0 = Normal | 1 = Defeito fixo | 2 = Normal | 3 = Defeito reversível"
+    "Resultado do teste de tálio",
+    {
+        "Normal": 0,
+        "Defeito fixo": 1,
+        "Normal (segundo tipo)": 2,
+        "Defeito reversível": 3
+    }
 )
 
-# Converter sexo
-sex = 1 if sex == "Masculino" else 0
-
-# Botão de previsão
 if st.button("🔍 Realizar Previsão"):
-
-    entrada = np.array([[age, sex, cp, trestbps, chol, fbs,
+    entrada = np.array([[age, sex_valor, cp, trestbps, chol, fbs,
                           restecg, thalach, exang, oldpeak,
                           slope, ca, thal]])
 
@@ -104,4 +100,3 @@ if st.button("🔍 Realizar Previsão"):
         st.error("⚠️ Risco de Doença Cardíaca Detectado")
     else:
         st.success("✅ Baixo risco de Doença Cardíaca")
-
