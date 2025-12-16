@@ -2,6 +2,11 @@
 
 Este projeto demonstra o processo completo de criação, avaliação e deploy de um modelo de Machine Learning, utilizando um dataset real de doenças cardíacas. O foco principal do projeto é o uso de uma Árvore de Decisão, desde a análise inicial no Google Colab até o deploy da aplicação utilizando Streamlit.
 
+# 🌐 Aplicação Online
+
+🔗 **Acesse a aplicação em produção:**  
+https://heart-disease-app-9ovzsc4lzmgjb7vexpukx5.streamlit.app/
+
 ## 📊 Dataset
 
 O dataset utilizado foi obtido no Kaggle:
